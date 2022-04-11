@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,12 @@ Route::get('/welcome', function () {
     echo "Hola mundo";
 });
 
+Route::get('/test/{name?}', function($name = null) {
+    $texto = '<h2>Mi nombre '.$name.'</h2>';
+
+    return view('test', array(
+        'texto' => $texto
+    ));
+});
+
+Route::get('/test2/movies', [TestController::class, 'index']);
