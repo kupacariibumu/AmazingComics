@@ -31,3 +31,6 @@ Route::get('/test/{name?}', function($name = null) {
 });
 
 Route::get('/test2/movies', [TestController::class, 'index']);
+
+// Probando el ORM
+Route::get('/testorm', [TestController::class, 'testOrm']);
