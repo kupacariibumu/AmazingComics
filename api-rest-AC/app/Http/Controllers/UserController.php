@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -25,7 +26,7 @@ class UserController extends Controller
             $validate = \Validator::make($params_array, [
                 'name'      => 'required|alpha',
                 'surname'   => 'required|alpha',
-                'email'     => 'required|email',
+                'email'     => 'required|email|unique:users',
                 'password'  => 'required'
             ]);
 
@@ -40,13 +41,24 @@ class UserController extends Controller
 
             } else {
                 // Cifrar la contraseña
-                // Comprobar si el usuario existe ya (duplicado)
+                $pass_hash = password_hash($params_array['password'], PASSWORD_BCRYPT, ['cost' => 4]);
+
                 // Crear el usuario
+                $user = new User();
+                $user->name = $params_array['name'];
+                $user->surname = $params_array['surname'];
+                $user->email = $params_array['email'];
+                $user->password = $pass_hash;
+                $user->role = 'ROLE_USER';
+
+                // Guardar el usuario
+                $user->save();
 
                 $data = array(
                     'status' => 'success',
                     'code' => 200,
-                    'message' => 'El usuario se ha creado correctamente'
+                    'message' => 'El usuario se ha creado correctamente',
+                    'user' => $user
                 );
             }
         } else {
@@ -58,8 +70,6 @@ class UserController extends Controller
             );
 
         }
-
-
 
         return response()->json($data, $data['code']);
     }
