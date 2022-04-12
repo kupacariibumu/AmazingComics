@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +18,7 @@ use App\Http\Controllers\TestController;
 |
 */
 
+// ------> Rutas testing
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,15 +27,32 @@ Route::get('/welcome', function () {
     echo "Hola mundo";
 });
 
-Route::get('/test/{name?}', function($name = null) {
-    $texto = '<h2>Mi nombre '.$name.'</h2>';
+// ------> Primeras rutas de prueba
+// Route::get('/test/{name?}', function($name = null) {
+//     $texto = '<h2>Mi nombre '.$name.'</h2>';
 
-    return view('test', array(
-        'texto' => $texto
-    ));
-});
+//     return view('test', array(
+//         'texto' => $texto
+//     ));
+// });
 
-Route::get('/test2/movies', [TestController::class, 'index']);
+// Route::get('/test2/movies', [TestController::class, 'index']);
 
-// Probando el ORM
-Route::get('/testorm', [TestController::class, 'testOrm']);
+// ------> Probando el ORM
+// Route::get('/testorm', [TestController::class, 'testOrm']);
+
+// ------> Metodos HTTP comunes
+// GET: Conseguir datos o recursos
+// POST: Guardar datos o recursos, hacer logica desde un formulario
+// PUT: Actualizar datos o recursos
+// DELETE: Eliminar datos o recursos
+
+// ------> Rutas de API
+// Rutas de prueba
+Route::get('/user/test', [UserController::class, 'test']);
+Route::get('/post/test', [PostController::class, 'test']);
+Route::get('/category/test', [CategoryController::class, 'test']);
+
+// Rutas de usuario
+Route::post('/api/register', [UserController::class, 'register']);
+Route::post('/api/login', [UserController::class, 'login']);
