@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserManager;
+use App\Models\Managers\UserManager;
 
 class UserController extends Controller
 {
@@ -27,6 +27,10 @@ class UserController extends Controller
     }
 
     public function login(Request $request) {
+
+        $jwt_auth = new \JwtAuth();
+        echo $jwt_auth->sing_up();
+
         return "Accion de registro de login";
     }
 }
