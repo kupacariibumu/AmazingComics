@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Managers;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +12,7 @@ class UserManager extends Model
 
     public function __construct() {}
 
-    public function register_user(Array $params_array) {
+    public function register_user($params_array) {
         if(!empty($params_array)) {
             // Limpiar los datos
             $params_array = array_map('trim', $params_array);
@@ -68,6 +68,38 @@ class UserManager extends Model
         }
 
         return $data;
+    }
+
+    public function login_user($params_array) {
+        // Validar los datos
+        $validate = \Validator::make($params_array, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if($validate->fails()) {
+            $data_sing_up = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: El usuario no se ha podido identificar',
+                'errors' => $validate->errors()
+            );
+        } else {
+            // Cifra la password
+            $pass_hash = hash('SHA256', $params_array['password']);
+
+            // Devolver token o datos
+            $jwt_auth = new \JwtAuth();
+            $data_sing_up = $jwt_auth->sing_up($params_array['email'], $pass_hash);
+
+            // Si llega get token se devuelven los datos
+            if( isset($params_array['get_token']) ) {
+                $data_sing_up = $jwt_auth->sing_up($params_array['email'], $pass_hash, true);
+            }
+
+        }
+
+        return $data_sing_up;
     }
 
 }

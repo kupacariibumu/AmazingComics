@@ -9,7 +9,7 @@ use App\Models\User;
 
 class JwtAuth {
 
-    public $key;
+    private $key;
 
     public function __construct() {
         $this->key = "AMAZING_COMICS_33282986";
@@ -57,6 +57,32 @@ class JwtAuth {
         }
 
         return $data;
+    }
+
+    public function check_token($jwt, $get_identity=false) {
+        $auth = false;
+
+        try {
+            $jwt = str_replace('"', '', $jwt);
+            $decoded = JWT::decode($jwt, new Key($this->key, 'HS256'));
+        } catch (\UnexpectedValueException $e) {
+            $auth = false;
+        } catch (\DomainException $e) {
+            $auth = false;
+        }
+
+        if(!empty($decoded) && is_object($decoded) && isset($decoded->sub)) {
+            $auth = true;
+        } else {
+            $auth = false;
+        }
+
+        if($get_identity) {
+            return $decoded;
+        }
+
+        return $auth;
+
     }
 
 }

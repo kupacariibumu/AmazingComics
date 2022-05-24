@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserManager;
+use App\Models\Managers\UserManager;
 
 class UserController extends Controller
 {
@@ -12,7 +12,6 @@ class UserController extends Controller
     }
 
     public function register(Request $request) {
-
         // Recoger los datos del usuario por post
         $json = $request->input('json', null);
         // $params = json_decode($json); // Se pueden tener los datos en forma de objeto
@@ -27,40 +26,32 @@ class UserController extends Controller
     }
 
     public function login(Request $request) {
-
         // Recibir los datos por POST
         $json = $request->input('json', null);
-        $params = json_decode($json);
+        // $params = json_decode($json);
         $params_array = json_decode($json, true);
 
-        // Validar los datos
-        $validate = \Validator::make($params_array, [
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+        // Instanciamos el gestor y delegamos la tarea de realizar el login
+        $user_manager = new UserManager();
+        $data = $user_manager->login_user($params_array);
 
-        if($validate->fails()) {
-            $data_sing_up = array(
-                'status' => 'error',
-                'code' => 404,
-                'message' => 'ERROR: El usuario no se ha podido identificar',
-                'errors' => $validate->errors()
-            );
+        return response()->json($data, 200);
+    }
+
+    public function update(Request $request) {
+
+        // Recoger el token en un header
+        $token = $request->header('Authorization');
+        $jwt_auth = new \JwtAuth();
+        $check_token = $jwt_auth->check_token($token);
+
+        if($check_token) {
+            echo '<h1>Login correcto</h1>';
         } else {
-            // Cifra la password
-            $pass_hash = hash('SHA256', $params_array['password']);
-
-            // Devolver token o datos
-            $jwt_auth = new \JwtAuth();
-            $data_sing_up = $jwt_auth->sing_up($params_array['email'], $pass_hash);
-
-            // Si llega get token se devuelven los datos
-            if( isset($params_array['get_token']) ) {
-                $data_sing_up = $jwt_auth->sing_up($params_array['email'], $pass_hash, true);
-            }
-
+            echo '<h1>Login incorrecto</h1>';
         }
 
-        return response()->json($data_sing_up, 200);
+        die();
     }
+
 }
