@@ -36,7 +36,8 @@ class UserManager extends Model
 
             } else {
                 // Cifrar la contraseña
-                $pass_hash = password_hash($params_array['password'], PASSWORD_BCRYPT, ['cost' => 4]);
+                // $pass_hash = password_hash($params_array['password'], PASSWORD_BCRYPT, ['cost' => 4]);
+                $pass_hash = hash('SHA256', $params_array['password']);
 
                 // Crear el usuario
                 $user = new User();
