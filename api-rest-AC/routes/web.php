@@ -56,4 +56,4 @@ Route::get('/category/test', [CategoryController::class, 'test']);
 // Rutas de usuario
 Route::post('/api/register', [UserController::class, 'register']);
 Route::post('/api/login', [UserController::class, 'login']);
-Route::post('/api/user/update', [UserController::class, 'update']);
+Route::put('/api/user/update', [UserController::class, 'update']);

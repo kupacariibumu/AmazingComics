@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Managers\UserManager;
 
+// use Illuminate\Validation\Rule;
+// use App\Models\User;
+
 class UserController extends Controller
 {
     public function test(Request $request) {
@@ -39,19 +42,20 @@ class UserController extends Controller
     }
 
     public function update(Request $request) {
-
-        // Recoger el token en un header
+        // Recoger token de la cabecera
         $token = $request->header('Authorization');
-        $jwt_auth = new \JwtAuth();
-        $check_token = $jwt_auth->check_token($token);
 
-        if($check_token) {
-            echo '<h1>Login correcto</h1>';
-        } else {
-            echo '<h1>Login incorrecto</h1>';
-        }
+        // Recoger los datos por post
+        $json = $request->input('json', null);
+        // $params = json_decode($json);
+        $params_array = json_decode($json, true);
 
-        die();
+
+        // Instanciamos el gestor y delegamos la tarea de realizar el login
+        $user_manager = new UserManager();
+        $data = $user_manager->update_user($token, $params_array);
+
+        return response()->json($data, $data['code']);
     }
 
 }

@@ -5,6 +5,7 @@ namespace App\Models\Managers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class UserManager extends Model
 {
@@ -100,6 +101,84 @@ class UserManager extends Model
         }
 
         return $data_sing_up;
+    }
+
+    public function update_user($token, $params_array) {
+        if( !is_null($token) ) {
+            $jwt_auth = new \JwtAuth();
+            $check_token = $jwt_auth->check_token($token);
+
+            if($check_token) {
+
+                if(!is_null($params_array) && !empty($params_array)){
+                    // Sacar usuario identificado
+                    $user = $jwt_auth->check_token($token, true);
+
+                    // Validar los datos
+                    $validate = \Validator::make($params_array, [
+                        'name'      => 'required|alpha',
+                        'surname'   => 'required|alpha',
+                        'email'     => [
+                            'required',
+                            'email',
+                            Rule::unique('users')->ignore($user->sub)
+                        ]
+                    ]);
+
+                    if($validate->fails()) {
+                        $data = array(
+                            'status' => 'error',
+                            'code' => 400,
+                            'message' => 'ERROR: Los datos a actualizar son erroneos o faltan datos',
+                            'errors' => $validate->errors()
+                        );
+
+                    } else {
+                        // Quitar los campos que no se quieren actualizar
+                        unset($params_array['id']);
+                        unset($params_array['role']);
+                        unset($params_array['created_at']);
+                        unset($params_array['remember_token']);
+
+                        // Actualizar el usuario en la base de datos
+                        $user_update = User::where('id', $user->sub)->update($params_array);
+
+                        // Devolver array con el resultado
+                        $data = array(
+                            'status' => 'success',
+                            'code' => 200,
+                            'user' => $user,
+                            'changes' => $params_array
+                        );
+                    }
+
+                } else {
+                    $data = array(
+                        'status' => 'error',
+                        'code' => 400,
+                        'message' => 'ERROR: No se enviaron datos para actualizar'
+                    );
+
+                }
+
+            } else {
+                // Devolver mensaje de error
+                $data = array(
+                    'code' => 400,
+                    'status' => 'error',
+                    'message' => 'ERROR: El usuario no esta identificado.'
+                );
+            }
+        } else {
+            // Devolver mensaje de error
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'message' => 'ERROR: No se ha enviado un token.'
+            );
+        }
+
+        return $data;
     }
 
 }
