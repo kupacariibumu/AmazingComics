@@ -23,11 +23,12 @@ use App\Http\Middleware\ApiAuthMiddleware;
 
 // ------> Rutas testing
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    echo "Amazing Comics!";
 });
 
 Route::get('/welcome', function () {
-    echo "Hola mundo";
+    echo "Hello world!";
 });
 
 // ------> Primeras rutas de prueba
@@ -52,9 +53,9 @@ Route::get('/welcome', function () {
 
 // ------> Rutas de API
 // Rutas de prueba
-Route::get('/user/test', [UserController::class, 'test']);
-Route::get('/post/test', [PostController::class, 'test']);
-Route::get('/category/test', [CategoryController::class, 'test']);
+// Route::get('/user/test', [UserController::class, 'test']);
+// Route::get('/post/test', [PostController::class, 'test']);
+// Route::get('/category/test', [CategoryController::class, 'test']);
 
 // Rutas de usuario
 Route::post('/api/register', [UserController::class, 'register']);
