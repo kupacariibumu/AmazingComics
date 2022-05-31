@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Managers\UserManager;
 
-// use Illuminate\Validation\Rule;
-// use App\Models\User;
-
 class UserController extends Controller
 {
     public function test(Request $request) {
@@ -59,12 +56,19 @@ class UserController extends Controller
     }
 
     public function upload(Request $request) {
-
         // Instanciamos el gestor y delegamos la tarea de realizar subir la imagen
         $user_manager = new UserManager();
         $data = $user_manager->upload_user_image($request);
 
         return response()->json($data, $data['code']);
+    }
+
+    public function get_image($file_name) {
+        // Instanciamos el gestor y delegamos la tarea de realizar obtener la imagen
+        $user_manager = new UserManager();
+        $data = $user_manager->get_user_image($file_name);
+
+        return $data;
     }
 
 }

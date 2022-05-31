@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\Response;
 
 class UserManager extends Model
 {
@@ -210,6 +211,24 @@ class UserManager extends Model
         }
 
         return $data;
+    }
+
+    public function get_user_image($file_name) {
+        $isset = \Storage::disk('users')->exists($file_name);
+
+        if($isset) {
+            $file = \Storage::disk('users')->get($file_name);
+            return new Response($file, 200);
+
+        } else {
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'message' => 'ERROR: La imagen no existe.'
+            );
+            return response()->json($data, $data['code']);
+
+        }
     }
 
 }
