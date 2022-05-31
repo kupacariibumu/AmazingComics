@@ -64,3 +64,7 @@ Route::put('/api/user/update', [UserController::class, 'update']);
 Route::post('/api/user/upload',[UserController::class, 'upload'])->middleware(ApiAuthMiddleware::class);
 Route::get('/api/user/image/{file_name}', [UserController::class, 'get_image']);
 Route::get('/api/user/detail/{id}', [UserController::class, 'user_detail']);
+
+// Rutas de categoria
+// Rutas de tipo resource, son rutas automaticas, no tenemos que definir ruta por ruta
+Route::resource('/api/category', CategoryController::class);
