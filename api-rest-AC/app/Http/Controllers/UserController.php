@@ -71,4 +71,12 @@ class UserController extends Controller
         return $data;
     }
 
+    public function user_detail($id) {
+        // Instanciamos el gestor y delegamos la tarea de realizar obtener la imagen
+        $user_manager = new UserManager();
+        $data = $user_manager->get_user_detail($id);
+
+        return response()->json($data, $data['code']);
+    }
+
 }

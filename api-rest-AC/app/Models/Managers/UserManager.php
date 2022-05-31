@@ -231,4 +231,26 @@ class UserManager extends Model
         }
     }
 
+    public function get_user_detail($id) {
+        $user = User::find($id);
+
+        if(is_object($user)) {
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'user' => $user
+            );
+
+        } else {
+            $data = array(
+                'code' => 404,
+                'status' => 'error',
+                'message' => 'ERROR: El usuario no existe.'
+            );
+
+        }
+
+        return $data;
+    }
+
 }
