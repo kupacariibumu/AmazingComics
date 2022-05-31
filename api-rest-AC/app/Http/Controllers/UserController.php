@@ -59,27 +59,10 @@ class UserController extends Controller
     }
 
     public function upload(Request $request) {
-        // Recoger los datos de la peticion (Archivo imagen)
-        $image = $request->file('file0');
 
-        // Guardar la imagen
-        if($image) {
-            $image_name = time().$image->getClientOriginalName();
-            \Storage::disk('users')->put($image_name, \File::get($image));
-
-            $data = array(
-                'code' => 200,
-                'status' => 'success',
-                'image' => $image_name
-            );
-
-        } else {
-            $data = array(
-                'code' => 400,
-                'status' => 'error',
-                'message' => 'ERROR: Error al subir la imagen.'
-            );
-        }
+        // Instanciamos el gestor y delegamos la tarea de realizar subir la imagen
+        $user_manager = new UserManager();
+        $data = $user_manager->upload_user_image($request);
 
         return response()->json($data, $data['code']);
     }

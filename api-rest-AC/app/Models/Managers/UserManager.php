@@ -181,4 +181,35 @@ class UserManager extends Model
         return $data;
     }
 
+    public function upload_user_image($request) {
+        // Recoger los datos de la peticion (Archivo imagen)
+        $image = $request->file('file0');
+
+        // Validacion de la imagen
+        $validate = \Validator::make($request->all(), [
+            'file0' => 'required|image|mimes:jpg,jpeg,png,gif'
+        ]);
+
+        if(!$image || $validate->fails()){
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'message' => 'ERROR: Error al subir la imagen.'
+            );
+
+        } else {
+            $image_name = time().$image->getClientOriginalName();
+            \Storage::disk('users')->put($image_name, \File::get($image));
+
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'image' => $image_name
+            );
+
+        }
+
+        return $data;
+    }
+
 }
