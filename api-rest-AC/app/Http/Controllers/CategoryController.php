@@ -10,6 +10,12 @@ use App\Models\Managers\CategoryManager;
 
 class CategoryController extends Controller
 {
+
+    public function __construct() {
+        // Cargar el middleware de autenticacion, para la creacion de una categoria
+        $this->middleware('api.auth', ['except' => ['index', 'show']]);
+    }
+
     public function test(Request $request) {
         return "Accion de pruebas de category controller";
     }
@@ -27,6 +33,19 @@ class CategoryController extends Controller
         $category_manager = new CategoryManager();
         $data = $category_manager->get_specific_category($id);
 
+        return response()->json($data, $data['code']);
+    }
+
+    public function store(Request $request) {
+        // Recoger los datos por post
+        $json = $request->input('json', null);
+        $params_array = json_decode($json, true);
+
+        // Instanciamos el gestor y delegamos la tarea de obtener una categoria en concreto
+        $category_manager = new CategoryManager();
+        $data = $category_manager->store_category($params_array);
+
+        // Devolver el resultado
         return response()->json($data, $data['code']);
     }
 

@@ -51,4 +51,46 @@ class CategoryManager extends Model
         return $data;
     }
 
+    public function store_category($params_array) {
+
+        if(!is_null($params_array)) {
+            // Validar los datos
+            $validate = \Validator::make($params_array, [
+                'name' => 'required'
+            ]);
+
+            // Guardar la categoria
+            if($validate->fails()) {
+                $data = array(
+                    'status' => 'error',
+                    'code' => 404,
+                    'message' => 'ERROR: No se ha guardado la categoria.'
+                );
+
+            } else {
+                $category = new Category();
+                $category->name = $params_array['name'];
+                $category->save();
+
+                $data = array(
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Categoria almacenada correctamente.',
+                    'category' => $category
+                );
+
+            }
+
+        } else {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: No se ha guardado la categoria.'
+            );
+
+        }
+
+        return $data;
+    }
+
 }
