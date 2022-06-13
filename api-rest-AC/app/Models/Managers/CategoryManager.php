@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Http\Response;
 use App\Models\Category;
+use App\Models\Post;
 
 
 class CategoryManager extends Model
@@ -137,6 +138,53 @@ class CategoryManager extends Model
 
         return $data;
 
+    }
+
+    public function delete_category($id) {
+
+        if(!is_null($id)) {
+
+            $category = Category::find($id);
+
+            if(is_object($category)) {
+
+                $posts = Post::where('category_id', $id)->get();
+
+                if( $posts->isEmpty() ){
+                    $category = Category::where('id', $id)->delete();
+                    $data = array(
+                        'status' => 'success',
+                        'code' => 200,
+                        'message' => 'Categoria eliminada correctamente.',
+                        'category' => $category
+                    );
+
+                } else {
+                    $data = array(
+                        'status' => 'error',
+                        'code' => 404,
+                        'message' => 'ERROR: La categoria tiene posts asociados.'
+                    );
+
+                }
+
+            } else {
+                $data = array(
+                    'status' => 'error',
+                    'code' => 404,
+                    'message' => 'ERROR: La categoria no existe.'
+                );
+            }
+
+        } else {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: No se ha eliminado la categoria.'
+            );
+        }
+
+        return $data;
     }
 
 }

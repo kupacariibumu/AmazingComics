@@ -63,4 +63,12 @@ class CategoryController extends Controller
 
     }
 
+    public function destroy($id) {
+        // Instanciamos el gestor y delegamos la tarea de eliminar una categoria en concreto
+        $category_manager = new CategoryManager();
+        $data = $category_manager->delete_category($id);
+
+        return response()->json($data, $data['code']);
+    }
+
 }
