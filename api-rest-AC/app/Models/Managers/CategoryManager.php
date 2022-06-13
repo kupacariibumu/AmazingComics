@@ -93,4 +93,50 @@ class CategoryManager extends Model
         return $data;
     }
 
+    public function update_category($id, $params_array) {
+
+        if(!is_null($params_array) && !is_null($id)) {
+            // Validar los datos
+            $validate = \Validator::make($params_array, [
+                'name' => 'required'
+            ]);
+
+            if($validate->fails()) {
+                $data = array(
+                    'status' => 'error',
+                    'code' => 404,
+                    'message' => 'ERROR: No se ha actualizado la categoria.'
+                );
+
+            } else {
+                // Quitar lo que no quiero actualizar
+                unset($params_array['id']);
+                unset($params_array['created_at']);
+
+                // Actualizar la categoria
+                $category = Category::where('id', $id)->update($params_array);
+
+                $data = array(
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Categoria actualizada correctamente.',
+                    'category' => $category
+                );
+
+            }
+
+
+        } else {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: No se ha actualizado la categoria.'
+            );
+
+        }
+
+        return $data;
+
+    }
+
 }
