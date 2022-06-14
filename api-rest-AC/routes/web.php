@@ -68,3 +68,6 @@ Route::get('/api/user/detail/{id}', [UserController::class, 'user_detail']);
 // Rutas de categoria
 // Rutas de tipo resource, son rutas automaticas, no tenemos que definir ruta por ruta
 Route::resource('/api/category', CategoryController::class);
+
+// Rutas del controlador de posts
+Route::resource('/api/post', PostController::class);

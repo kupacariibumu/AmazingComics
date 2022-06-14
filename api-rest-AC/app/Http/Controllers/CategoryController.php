@@ -5,19 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Managers\CategoryManager;
 
-// use Illuminate\Http\Response;
-// use App\Models\Category;
-
 class CategoryController extends Controller
 {
 
     public function __construct() {
         // Cargar el middleware de autenticacion, para la creacion de una categoria
         $this->middleware('api.auth', ['except' => ['index', 'show']]);
-    }
-
-    public function test(Request $request) {
-        return "Accion de pruebas de category controller";
     }
 
     public function index() {

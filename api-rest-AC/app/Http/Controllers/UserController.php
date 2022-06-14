@@ -7,9 +7,6 @@ use App\Models\Managers\UserManager;
 
 class UserController extends Controller
 {
-    public function test(Request $request) {
-        return "Accion de pruebas de user controller";
-    }
 
     public function register(Request $request) {
         // Recoger los datos del usuario por post
