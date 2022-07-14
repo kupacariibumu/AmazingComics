@@ -104,4 +104,53 @@ class PostManager extends Model
         return $data;
     }
 
+    public function update_post($id, $params_array, $token) {
+        if(!is_null($params_array) && !empty($params_array)) {
+            // Validar los datos
+            $validate = \Validator::make($params_array, [
+                'title' => 'required',
+                'content' => 'required',
+                'category_id' => 'required'
+            ]);
+
+            if($validate->fails()) {
+                // Error con la validacion de los datos
+                $data = array(
+                    'status' => 'error',
+                    'code' => 404,
+                    'message' => 'ERROR: Datos invalidos.'
+                );
+
+            } else {
+                // Eliminar lo que no se quiere actualizar
+                unset($params_array['id']);
+                unset($params_array['user_id']);
+                unset($params_array['created_at']);
+                unset($params_array['user']);
+
+                // Actualizar el registro
+                $post = Post::where('id', $id)->updateOrCreate($params_array);
+
+                $data = array(
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Post actualizado correctamente.',
+                    'changes' => $params_array,
+                    'post' => $post
+                );
+
+            }
+
+        } else {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: No se ha actualizado el post.'
+            );
+
+        }
+
+        return $data;
+    }
+
 }

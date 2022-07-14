@@ -44,4 +44,22 @@ class PostController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    public function update($id, Request $request) {
+        // Recoger los datos por post
+        $json = $request->input('json', null);
+        $params_array = json_decode($json, true);
+        $token = $request->header('Authorization', null);
+
+        // Instanciamos el gestor y delegamos la tarea de actualizar un post
+        $post_manager = new PostManager();
+        $data = $post_manager->update_post($id, $params_array, $token);
+
+        // Devolver el resultado
+        return response()->json($data, $data['code']);
+    }
+
+    public function destroy() {
+        // 45 en eliminar entrada
+    }
+
 }
