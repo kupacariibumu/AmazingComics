@@ -153,4 +153,44 @@ class PostManager extends Model
         return $data;
     }
 
+    public function delete_post($id, $token) {
+        // Conseguimos el posts
+        $post= Post::find($id);
+
+        // Conseguir usuario identifado
+        $jwt_auth = new JwtAuth();
+        $user = $jwt_auth->check_token($token, true);
+        $id_user = $user->sub;
+
+        if( is_object($post) ){
+            if( $id_user == $post->user_id ) {
+                // Borrar el posts
+                $post->delete();
+                $data = array(
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Post eliminado correctamente.',
+                    'post' => $post
+                );
+
+            } else {
+                $data = array(
+                    'status' => 'error',
+                    'code' => 404,
+                    'message' => 'ERROR: No eres autor del post.'
+                );
+
+            }
+        } else {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: El post NO existe.'
+            );
+
+        }
+
+        return $data;
+    }
+
 }

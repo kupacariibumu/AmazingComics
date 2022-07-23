@@ -58,8 +58,17 @@ class PostController extends Controller
         return response()->json($data, $data['code']);
     }
 
-    public function destroy() {
-        // 45 en eliminar entrada
+    public function destroy($id, Request $request) {
+        // Recoger los datos por post
+        $json = $request->input('json', null);
+        $token = $request->header('Authorization', null);
+
+        // Instanciamos el gestor y delegamos la tarea de eliminar un post
+        $post_manager = new PostManager();
+        $data = $post_manager->delete_post($id, $token);
+
+        // Devolver el resultado
+        return response()->json($data, $data['code']);
     }
 
 }
