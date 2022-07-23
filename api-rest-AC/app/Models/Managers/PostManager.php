@@ -128,16 +128,48 @@ class PostManager extends Model
                 unset($params_array['created_at']);
                 unset($params_array['user']);
 
-                // Actualizar el registro
-                $post = Post::where('id', $id)->updateOrCreate($params_array);
+                $post = Post::find($id);
 
-                $data = array(
-                    'status' => 'success',
-                    'code' => 200,
-                    'message' => 'Post actualizado correctamente.',
-                    'changes' => $params_array,
-                    'post' => $post
-                );
+                if( is_object($post) ){
+                    // Conseguir usuario identifado
+                    $jwt_auth = new JwtAuth();
+                    $user = $jwt_auth->check_token($token, true);
+                    $id_user = $user->sub;
+
+                    if( $id_user == $post->user_id ) {
+                        // Actualizar el registro
+                        $post->title = $params_array['title'];
+                        $post->content = $params_array['content'];
+                        $post->category_id = $params_array['category_id'];
+                        if( isset($params_array['image']) ) {
+                            $post->image = $params_array['image'];
+                        }
+                        $post->save();
+
+                        $data = array(
+                            'status' => 'success',
+                            'code' => 200,
+                            'message' => 'Post actualizado correctamente.',
+                            'changes' => $params_array,
+                            'post' => $post
+                        );
+
+                    } else {
+                        $data = array(
+                            'status' => 'error',
+                            'code' => 404,
+                            'message' => 'ERROR: No eres autor del post.'
+                        );
+
+                    }
+                } else {
+                    $data = array(
+                        'status' => 'error',
+                        'code' => 404,
+                        'message' => 'ERROR: El post NO existe.'
+                    );
+
+                }
 
             }
 
@@ -154,8 +186,8 @@ class PostManager extends Model
     }
 
     public function delete_post($id, $token) {
-        // Conseguimos el posts
-        $post= Post::find($id);
+        // Conseguimos el post
+        $post = Post::find($id);
 
         // Conseguir usuario identifado
         $jwt_auth = new JwtAuth();
