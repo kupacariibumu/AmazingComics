@@ -134,9 +134,8 @@ class PostManager extends Model
                     // Conseguir usuario identifado
                     $jwt_auth = new JwtAuth();
                     $user = $jwt_auth->check_token($token, true);
-                    $id_user = $user->sub;
 
-                    if( $id_user == $post->user_id ) {
+                    if( $user->sub == $post->user_id ) {
                         // Actualizar el registro
                         $post->title = $params_array['title'];
                         $post->content = $params_array['content'];
@@ -192,10 +191,9 @@ class PostManager extends Model
         // Conseguir usuario identifado
         $jwt_auth = new JwtAuth();
         $user = $jwt_auth->check_token($token, true);
-        $id_user = $user->sub;
 
         if( is_object($post) ){
-            if( $id_user == $post->user_id ) {
+            if( $user->sub == $post->user_id ) {
                 // Borrar el posts
                 $post->delete();
                 $data = array(

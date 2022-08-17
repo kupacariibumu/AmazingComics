@@ -71,4 +71,6 @@ class PostController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    // 44 permisos solo de autor
+
 }
