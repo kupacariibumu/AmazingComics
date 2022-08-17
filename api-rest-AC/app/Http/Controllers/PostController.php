@@ -11,7 +11,13 @@ class PostController extends Controller
 
     public function __construct() {
         // Cargar el middleware de autenticacion, para la creacion de una categoria
-        $this->middleware('api.auth', ['except' => ['index', 'show', 'get_image_post']]);
+        $this->middleware('api.auth', ['except' => [
+            'index',
+            'show',
+            'get_image_post',
+            'get_posts_by_category',
+            'get_posts_by_user'
+        ]]);
     }
 
     public function index() {
@@ -86,6 +92,28 @@ class PostController extends Controller
         // Instanciamos el gestor y delegamos la tarea de subir obtener la imagen de un post
         $post_manager = new PostManager();
         return $post_manager->get_image($file_name);
+
+    }
+
+    public function get_posts_by_category($id) {
+
+        // Instanciamos el gestor y delegamos la tarea de obetener todos los posts por categoria
+        $post_manager = new PostManager();
+        $data = $post_manager->get_posts_category($id);
+
+        // Devolver el resultado
+        return response()->json($data, $data['code']);
+
+    }
+
+    public function get_posts_by_user($id) {
+
+        // Instanciamos el gestor y delegamos la tarea de obetener todos los posts por usuario
+        $post_manager = new PostManager();
+        $data = $post_manager->get_posts_user($id);
+
+        // Devolver el resultado
+        return response()->json($data, $data['code']);
 
     }
 

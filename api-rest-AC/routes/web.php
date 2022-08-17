@@ -57,7 +57,7 @@ Route::get('/welcome', function () {
 // Route::get('/post/test', [PostController::class, 'test']);
 // Route::get('/category/test', [CategoryController::class, 'test']);
 
-// Rutas de usuario
+// -----> Rutas de USUARIO
 Route::post('/api/register', [UserController::class, 'register']);
 Route::post('/api/login', [UserController::class, 'login']);
 Route::put('/api/user/update', [UserController::class, 'update']);
@@ -65,10 +65,12 @@ Route::post('/api/user/upload',[UserController::class, 'upload'])->middleware(Ap
 Route::get('/api/user/image/{file_name}', [UserController::class, 'get_image']);
 Route::get('/api/user/detail/{id}', [UserController::class, 'user_detail']);
 
-// Rutas de categoria
+// -----> Rutas de CATEGORIA
 // Rutas de tipo resource, son rutas automaticas, no tenemos que definir ruta por ruta
 Route::resource('/api/category', CategoryController::class);
 
+
+// -----> Rutas de POST
 // Rutas del controlador de posts
 Route::resource('/api/post', PostController::class);
 
@@ -77,3 +79,7 @@ Route::post('/api/post/upload',[PostController::class, 'upload_image_post'])->mi
 
 // Ruta para obtener la imagen
 Route::get('/api/post/image/{file_name}',[PostController::class, 'get_image_post']);
+
+// Rutas para obtener posts por usuario y categoria
+Route::get('/api/post/category/{id}',[PostController::class, 'get_posts_by_category']);
+Route::get('/api/post/user/{id}',[PostController::class, 'get_posts_by_user']);

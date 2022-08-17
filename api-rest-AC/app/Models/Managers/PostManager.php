@@ -279,4 +279,45 @@ class PostManager extends Model
 
     }
 
+    public function get_posts_category($id) {
+        $posts = Post::where('category_id', $id)->get();
+
+        if(count($posts) > 0) {
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'posts' => $posts
+            );
+        } else {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: NO hay posts en la categoria.'
+            );
+        }
+
+        return $data;
+
+    }
+
+    public function get_posts_user($id) {
+        $posts = Post::where('user_id', $id)->get();
+
+        if(count($posts) > 0) {
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'posts' => $posts
+            );
+        } else {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: NO hay posts hechos por el usuario.'
+            );
+        }
+
+        return $data;
+    }
+
 }
