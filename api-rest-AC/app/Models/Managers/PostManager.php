@@ -256,4 +256,27 @@ class PostManager extends Model
         return $data;
     }
 
+    public function get_image($file_name) {
+        // Comprobar si existe el fichero
+        $isset = \Storage::disk('users')->exists($file_name);
+        if($isset) {
+            // Conseguirla imagen
+            $file = \Storage::disk('users')->get($file_name);
+
+            // Devolver la imagen
+            // return new Response($file, 200);
+            return response($file, 200);
+
+        } else {
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: La imagen NO existe.'
+            );
+
+            return response()->json($data, $data['code']);
+        }
+
+    }
+
 }

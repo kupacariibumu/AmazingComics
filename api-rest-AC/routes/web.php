@@ -74,3 +74,6 @@ Route::resource('/api/post', PostController::class);
 
 // Ruta para subir la imagen
 Route::post('/api/post/upload',[PostController::class, 'upload_image_post'])->middleware(ApiAuthMiddleware::class);
+
+// Ruta para obtener la imagen
+Route::get('/api/post/image/{file_name}',[PostController::class, 'get_image_post']);
