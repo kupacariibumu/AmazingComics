@@ -71,6 +71,14 @@ class PostController extends Controller
         return response()->json($data, $data['code']);
     }
 
-    // 44 permisos solo de autor
+    public function upload_image_post(Request $request) {
+
+        // Instanciamos el gestor y delegamos la tarea de subir una imagen de un post
+        $post_manager = new PostManager();
+        $data = $post_manager->update_image($request);
+
+        // Devolver el resultado
+        return response()->json($data, $data['code']);
+    }
 
 }

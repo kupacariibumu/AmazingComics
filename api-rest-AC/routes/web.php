@@ -71,3 +71,6 @@ Route::resource('/api/category', CategoryController::class);
 
 // Rutas del controlador de posts
 Route::resource('/api/post', PostController::class);
+
+// Ruta para subir la imagen
+Route::post('/api/post/upload',[PostController::class, 'upload_image_post'])->middleware(ApiAuthMiddleware::class);

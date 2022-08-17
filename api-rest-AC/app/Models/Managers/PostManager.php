@@ -223,4 +223,37 @@ class PostManager extends Model
         return $data;
     }
 
+    public function update_image($request) {
+        // Recorger la imagen de la peticion
+        $image = $request->file('file0');
+
+        // Validar la imagen
+        $validate = \Validator::make($request->all(), [
+            'file0' => 'required|mimes:jpg,jpeg,png,gif'
+        ]);
+
+        // Guardar la imagen
+        if($validate->fails() || !$image) {
+            // Error con la validacion de los datos
+            $data = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'ERROR: La imagen no es valida.'
+            );
+
+        } else {
+            $image_name = time().$image->getClientOriginalName();
+            \Storage::disk('images')->put($image_name, \File::get($image));
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'imagen' => $image_name,
+                'message' => 'La imagen fue subida correctamente.'
+            );
+
+        }
+
+        return $data;
+    }
+
 }
