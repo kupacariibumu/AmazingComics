@@ -1,8 +1,8 @@
 <!-- Contenedor principal -->
-<div class="container">
+<div class="">
 
   <!-- Barra de navegacion -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mt-3">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
 
       <a class="navbar-brand" [routerLink]="['/']">
@@ -73,8 +73,58 @@
   <!-- FIN Barra de navegacion -->
 
   <!-- Contenido -->
-  <router-outlet></router-outlet>
+  <div class="container container-main">
+    <router-outlet></router-outlet>
+  </div>
   <!-- FIN contenido -->
 
 </div>
 <!-- FIN contenedor principal -->
+
+<!-- Footer -->
+<div class="footer-dark mt-5">
+  <footer>
+      <div class="container">
+          <div class="row">
+              <div class="col-sm-6 col-md-3 item">
+                  <h3>Services</h3>
+                  <ul>
+                      <li><a >Web design</a></li>
+                      <li><a >Development</a></li>
+                      <li><a >Hosting</a></li>
+                  </ul>
+              </div>
+              <div class="col-sm-6 col-md-3 item">
+                  <h3>About</h3>
+                  <ul>
+                      <li><a >Company</a></li>
+                      <li><a >Team</a></li>
+                      <li><a >Careers</a></li>
+                  </ul>
+              </div>
+              <div class="col-md-6 item text">
+                  <h3>Amazing Comics</h3>
+                  <p class="p-footer">Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.</p>
+              </div>
+              <div class="col item social">
+                <a href="" target="_blank">
+                  <i class="fab fa-instagram"></i>
+                </a>
+
+                <a href="" target="_blank">
+                  <i class="fab fa-facebook-f" ></i>
+                </a>
+
+                <a href="" target="_blank">
+                  <i class="fab fa-twitter"></i>
+                </a>
+
+                <a >
+                  <i class="fas fa-envelope"></i>
+                </a>
+              </div>
+          </div>
+          <p class="copyright">Amazing Comics &copy; 2020</p>
+      </div>
+  </footer>
+</div>
