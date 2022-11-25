@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
 import { routing, appRountingProviders } from "./app.routing";
 import { HttpClientModule } from "@angular/common/http";
+import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -22,7 +23,8 @@ import { ErrorComponent } from './components/error/error.component';
     BrowserModule,
     routing,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [
     appRountingProviders
