@@ -34,22 +34,22 @@ export class RegisterComponent implements OnInit {
 
         Swal.fire({
           title: 'Listo!',
-          text: 'Tu cuenta ha sido registrada correctamente.',
+          text: response.message,
           icon: 'success',
           confirmButtonText: 'Ok'
         });
 
-        // console.log(response);
       },
       error => {
         Swal.fire({
           title: 'ERROR',
-          text: 'Tu cuenta NO se ha registrado.',
+          text: error.error.message,
           icon: 'error',
           confirmButtonText: 'Ok'
         });
 
         // console.log(<any>error);
+        // console.log(error.error.message);
       }
     )
 
